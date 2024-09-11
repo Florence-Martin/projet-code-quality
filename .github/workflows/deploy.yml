@@ -1,17 +1,46 @@
-name: Deploy to VPS
+name: CI/CD Workflow
 
 on:
   push:
     branches:
-      - main
+      - main  # Le workflow s'exécute sur des pushs vers la branche principale
 
 jobs:
-  deploy:
-    runs-on: ubuntu-latest
+  analyze:
+    runs-on: ubuntu-latest  # Le job s'exécute sur une machine virtuelle Ubuntu
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
+        # Vérifie le code source du dépôt pour l'utiliser dans le workflow
+
+      - name: Install dependencies
+        run: npm install
+        # Installe les dépendances définies dans package.json
+
+      - name: Run tests
+        run: npm test
+        # Exécute les tests unitaires pour s'assurer que le code est fonctionnel
+
+      - name: Run SonarQube analysis
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        run: |
+          # Lance l'analyse de qualité du code avec SonarQube
+          npx sonar-scanner \
+            -Dsonar.projectKey=Florence-Martin_projet-code-quality \
+            -Dsonar.organization=. \
+            -Dsonar.host.url=https://sonarcloud.io \
+            -Dsonar.login=$SONAR_TOKEN
+
+  deploy:
+    runs-on: ubuntu-latest  # Le job s'exécute sur une machine virtuelle Ubuntu
+    needs: analyze  # Ce job dépend du job 'analyze'. Il ne s'exécutera que si 'analyze' réussit.
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+        # Vérifie à nouveau le code source du dépôt pour s'assurer que nous avons la dernière version
 
       - name: Deploy to VPS
         uses: appleboy/ssh-action@master
@@ -21,22 +50,30 @@ jobs:
           password: ${{ secrets.VPS_PASSWORD }}
           port: ${{ secrets.VPS_PORT }}
           script: |
+            # Met à jour les paquets et installe les outils nécessaires sur le serveur VPS
             sudo apt-get update
             sudo apt-get install -y nodejs npm
             sudo npm install -g pm2
-            # Assurez-vous que le dépôt Git est configuré
+            
+            # Vérifie si le dépôt Git est déjà cloné sur le VPS. Sinon, le clone.
             if [ ! -d "/home/adminlocal/projet-code-quality/.git" ]; then
               git clone https://$GITHUB_TOKEN@github.com/Florence-Martin/projet-code-quality.git /home/adminlocal/projet-code-quality
             fi
 
+            # Change de répertoire pour aller dans le dossier du projet
             cd /home/adminlocal/projet-code-quality
 
+            # Ajoute /usr/local/bin au PATH pour s'assurer que les outils globaux sont disponibles
             export PATH=$PATH:/usr/local/bin
 
-            # Récupérez les dernières modifications du dépôt avec authentication
+            # Récupère les dernières modifications du dépôt avec authentication
             git pull https://$GITHUB_TOKEN@github.com/Florence-Martin/projet-code-quality.git main
 
+            # Installe les dépendances du projet
             npm install
+            
+            # Construit le projet
             npm run build
 
+            # Redémarre l'application avec PM2 si elle est déjà en cours d'exécution, sinon démarre une nouvelle instance
             pm2 restart projet-code-quality || pm2 start npm --name "projet-code-quality" -- start

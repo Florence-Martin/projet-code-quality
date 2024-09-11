@@ -151,3 +151,62 @@ npx husky add .husky/pre-push "npm run test"
 ```
 
 Si les tests échouent, le git push sera bloqué, empêchant ainsi l’envoi de code défectueux sur le dépôt.
+
+# Intégrer SonarQube
+# Intégration de SonarQube dans un Processus CI/CD
+
+## 1. Installer SonarQube
+
+- **Localement** : Vous pouvez installer SonarQube sur votre machine locale ou un serveur de développement.
+  - Téléchargez SonarQube depuis [le site officiel](https://www.sonarqube.org/downloads/).
+  - Suivez les instructions d'installation pour votre système d'exploitation.
+- **Utiliser un Service Hébergé** : Vous pouvez également utiliser un service SonarQube hébergé, comme SonarCloud.
+
+## 2. Configurer SonarQube
+
+- **Créer un Projet** : Une fois SonarQube installé, créez un nouveau projet dans l'interface SonarQube.
+- **Obtenir un Token** : Vous aurez besoin d'un token d'authentification pour que votre pipeline CI/CD puisse communiquer avec SonarQube.
+
+## 3. Configurer SonarQube Scanner
+
+- **Ajouter SonarQube Scanner** : Ajoutez SonarQube Scanner à votre projet pour analyser le code et envoyer les résultats à SonarQube.
+  - Installez SonarQube Scanner avec npm :
+    ```bash
+    npm install --save-dev sonar-scanner
+    ```
+- **Configurer le Scanner** : Ajoutez un fichier de configuration pour SonarQube Scanner à la racine de notre projet (par exemple `sonar-project.properties`) :
+  ```properties
+  sonar.projectKey=my-project-key
+  sonar.organization=my-org
+  sonar.host.url=http://localhost:9000
+  sonar.login=my-sonar-token
+
+  # Paths
+  sonar.sources=src
+  sonar.tests=tests
+
+- **Ajouter une Étape** pour SonarQube dans notre workflow  
+
+Pour intégrer SonarQube à notre workflow GitHub Actions, nous devons ajouter une étape pour exécuter l’analyse SonarQube avant le déploiement.   
+
+Nous pouvons également intégrer des étapes pour la construction et les tests de notre projet avant le déploiement.
+
+- **Consulter les Rapports** : Après chaque analyse, consultez le tableau de bord SonarQube pour visualiser les résultats, les problèmes détectés et les recommandations.
+
+- **Avantages** 👍	  
+1.	**Qualité du Code**  
+	•	Détection de Bugs : Identifie les bugs potentiels dans le code avant qu’ils ne soient déployés en production.  
+	•	Vulnérabilités : Détecte les problèmes de sécurité qui pourraient exposer votre application à des risques.  
+
+2.	**Maintenabilité**
+	•	Code Smells : Repère les “code smells” (mauvaises pratiques) qui rendent le code difficile à maintenir ou à comprendre.  
+	•	Dettes Techniques : Permet de suivre et de gérer les dettes techniques, assurant que le code reste propre et bien structuré.  
+
+3.	**Couverture de Test**  
+	•	Mesure de la Couverture : Mesure la couverture des tests pour s’assurer que les tests couvrent une partie significative du code, augmentant ainsi la confiance dans les modifications.  
+
+4.	**Feedback Rapide**  
+	•	Intégration Continue : Intègre les analyses SonarQube dans le pipeline CI/CD pour obtenir un retour rapide sur les problèmes de code à chaque commit ou pull request.  
+
+5.	**Amélioration Continue**  
+	•	Historique des Analyses : Suivi des tendances dans la qualité du code au fil du temps, ce qui facilite l’amélioration continue et l’élimination des problèmes récurrents.
