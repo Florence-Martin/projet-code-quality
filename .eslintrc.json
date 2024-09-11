@@ -1,4 +1,5 @@
 {
+  "root": true,
   // "extends" permet d'étendre des configurations ESLint prédéfinies
   "extends": [
     "next/core-web-vitals", // Recommandations spécifiques pour Next.js Core Web Vitals

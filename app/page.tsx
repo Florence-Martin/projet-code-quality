@@ -12,7 +12,7 @@ export default function Home() {
 
   return (
     <div className="m-12">
-      <h1>Message from API: {message}</h1>
+      <h1 className="text-2xl">Message from API: {message}</h1>
     </div>
   );
 }
