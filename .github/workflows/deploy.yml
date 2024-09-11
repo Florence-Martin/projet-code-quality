@@ -13,18 +13,14 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v2
 
-    - name: Set up SSH
-      uses: webfactory/ssh-agent@v0.5.3
-      with:
-        ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
-
     - name: Deploy to VPS
-      env:
-        VPS_USER: ${{ secrets.VPS_USER }}
-        VPS_HOST: ${{ secrets.VPS_HOST }}
-        VPS_PORT: ${{ secrets.VPS_PORT }}
-      run: |
-        ssh -o StrictHostKeyChecking=no -p ${{ secrets.VPS_PORT }} ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }} << 'EOF'
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.VPS_HOST }}
+        username: ${{ secrets.VPS_USER }}
+        password: ${{ secrets.VPS_PASSWORD }}
+        port: ${{ secrets.VPS_PORT }}
+        script: |
           # Assurez-vous que le dépôt Git est configuré
           if [ ! -d "/home/adminlocal/projet-code-quality/.git" ]; then
             git clone https://github.com/Florence-Martin/projet-code-quality.git /home/adminlocal/projet-code-quality
@@ -47,4 +43,3 @@ jobs:
 
           # Redémarrez ou démarrez l'application avec PM2
           pm2 restart projet-code-quality || pm2 start npm --name "projet-code-quality" -- start
-        EOF
