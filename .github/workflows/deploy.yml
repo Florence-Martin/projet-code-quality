@@ -21,25 +21,22 @@ jobs:
         password: ${{ secrets.VPS_PASSWORD }}
         port: ${{ secrets.VPS_PORT }}
         script: |
+          sudo apt-get update
+          sudo apt-get install -y nodejs npm
+          sudo npm install -g pm2
           # Assurez-vous que le dépôt Git est configuré
           if [ ! -d "/home/adminlocal/projet-code-quality/.git" ]; then
-            git clone https://github.com/Florence-Martin/projet-code-quality.git /home/adminlocal/projet-code-quality
+            git clone https://$GITHUB_TOKEN@github.com/Florence-Martin/projet-code-quality.git /home/adminlocal/projet-code-quality
           fi
 
-          # Naviguez dans le répertoire du projet
           cd /home/adminlocal/projet-code-quality
 
-          # Ajoutez les chemins pour npm et pm2 dans le PATH
           export PATH=$PATH:/usr/local/bin
 
-          # Récupérez les dernières modifications du dépôt
-          git pull origin main
+          # Récupérez les dernières modifications du dépôt avec authentication
+          git pull https://$GITHUB_TOKEN@github.com/Florence-Martin/projet-code-quality.git main
 
-          # Installez les dépendances
           npm install
-
-          # Construisez l'application
           npm run build
 
-          # Redémarrez ou démarrez l'application avec PM2
           pm2 restart projet-code-quality || pm2 start npm --name "projet-code-quality" -- start
