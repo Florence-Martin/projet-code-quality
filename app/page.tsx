@@ -1,5 +1,16 @@
 // app/page.tsx
 'use client';
-import Home from '../app/Home';
+// app/page.tsx
+import React from 'react';
 
-export default Home;
+import Home from './components/Home';
+
+const Page: React.FC = () => {
+  return (
+    <main>
+      <Home />
+    </main>
+  );
+};
+
+export default Page;

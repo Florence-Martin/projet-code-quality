@@ -1,24 +1,17 @@
 {
   "compilerOptions": {
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
-    ],
+    "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
-    "types": [
-      "node",
-      "node-fetch"
-    ],
+    "types": ["node", "node-fetch"],
     "skipLibCheck": true,
     "strict": true,
     "noEmit": true,
     "esModuleInterop": true,
-    "module": "commonjs",            // Utiliser 'commonjs' pour la compatibilité avec Jest
-    "moduleResolution": "node",     // Utiliser 'node' pour une meilleure compatibilité avec les modules Node.js
+    "module": "commonjs",
+    "moduleResolution": "node",
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "jsx": "react-jsx",              // Utiliser 'react-jsx' pour React 17+
+    "jsx": "preserve",
     "incremental": true,
     "plugins": [
       {
@@ -26,9 +19,7 @@
       }
     ],
     "paths": {
-      "@/*": [
-        "./*"
-      ]
+      "@/*": ["./*"]
     }
   },
   "include": [
@@ -39,7 +30,5 @@
     "**/*.tsx",
     ".next/types/**/*.ts"
   ],
-  "exclude": [
-    "node_modules"
-  ]
+  "exclude": ["node_modules"]
 }

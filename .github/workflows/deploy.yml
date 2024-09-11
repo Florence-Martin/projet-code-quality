@@ -10,33 +10,33 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
+      - name: Checkout code
+        uses: actions/checkout@v2
 
-    - name: Deploy to VPS
-      uses: appleboy/ssh-action@master
-      with:
-        host: ${{ secrets.VPS_HOST }}
-        username: ${{ secrets.VPS_USER }}
-        password: ${{ secrets.VPS_PASSWORD }}
-        port: ${{ secrets.VPS_PORT }}
-        script: |
-          sudo apt-get update
-          sudo apt-get install -y nodejs npm
-          sudo npm install -g pm2
-          # Assurez-vous que le dépôt Git est configuré
-          if [ ! -d "/home/adminlocal/projet-code-quality/.git" ]; then
-            git clone https://$GITHUB_TOKEN@github.com/Florence-Martin/projet-code-quality.git /home/adminlocal/projet-code-quality
-          fi
+      - name: Deploy to VPS
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USER }}
+          password: ${{ secrets.VPS_PASSWORD }}
+          port: ${{ secrets.VPS_PORT }}
+          script: |
+            sudo apt-get update
+            sudo apt-get install -y nodejs npm
+            sudo npm install -g pm2
+            # Assurez-vous que le dépôt Git est configuré
+            if [ ! -d "/home/adminlocal/projet-code-quality/.git" ]; then
+              git clone https://$GITHUB_TOKEN@github.com/Florence-Martin/projet-code-quality.git /home/adminlocal/projet-code-quality
+            fi
 
-          cd /home/adminlocal/projet-code-quality
+            cd /home/adminlocal/projet-code-quality
 
-          export PATH=$PATH:/usr/local/bin
+            export PATH=$PATH:/usr/local/bin
 
-          # Récupérez les dernières modifications du dépôt avec authentication
-          git pull https://$GITHUB_TOKEN@github.com/Florence-Martin/projet-code-quality.git main
+            # Récupérez les dernières modifications du dépôt avec authentication
+            git pull https://$GITHUB_TOKEN@github.com/Florence-Martin/projet-code-quality.git main
 
-          npm install
-          npm run build
+            npm install
+            npm run build
 
-          pm2 restart projet-code-quality || pm2 start npm --name "projet-code-quality" -- start
+            pm2 restart projet-code-quality || pm2 start npm --name "projet-code-quality" -- start

@@ -11,9 +11,10 @@
     "plugin:import/typescript", // Règles spécifiques pour les importations dans les fichiers TypeScript
     "plugin:prettier/recommended" // Intègre Prettier dans ESLint pour formater le code automatiquement
   ],
-  
+
   // "rules" permet de personnaliser les règles ESLint
   "rules": {
+    "prettier/prettier": "off",
     // Désactive l'avertissement de React pour l'importation de React dans les fichiers JSX/TSX,
     // car ce n'est pas nécessaire dans un projet Next.js.
     "react/react-in-jsx-scope": "off",
