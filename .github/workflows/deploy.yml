@@ -24,10 +24,27 @@ jobs:
         VPS_HOST: ${{ secrets.VPS_HOST }}
         VPS_PORT: ${{ secrets.VPS_PORT }}
       run: |
-        ssh -o StrictHostKeyChecking=no -p $VPS_PORT $VPS_USER@$VPS_HOST << 'EOF'
+        ssh -o StrictHostKeyChecking=no -p ${{ secrets.VPS_PORT }} ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }} << 'EOF'
+          # Assurez-vous que le dépôt Git est configuré
+          if [ ! -d "/home/adminlocal/projet-code-quality/.git" ]; then
+            git clone https://github.com/Florence-Martin/projet-code-quality.git /home/adminlocal/projet-code-quality
+          fi
+
+          # Naviguez dans le répertoire du projet
           cd /home/adminlocal/projet-code-quality
+
+          # Ajoutez les chemins pour npm et pm2 dans le PATH
+          export PATH=$PATH:/usr/local/bin
+
+          # Récupérez les dernières modifications du dépôt
           git pull origin main
+
+          # Installez les dépendances
           npm install
+
+          # Construisez l'application
           npm run build
+
+          # Redémarrez ou démarrez l'application avec PM2
           pm2 restart projet-code-quality || pm2 start npm --name "projet-code-quality" -- start
         EOF
