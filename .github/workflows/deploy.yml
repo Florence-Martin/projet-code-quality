@@ -29,5 +29,5 @@ jobs:
           git pull origin main
           npm install
           npm run build
-          pm2 restart my-next-project || pm2 start npm --name "my-next-project" -- start
+          pm2 restart projet-code-quality || pm2 start npm --name "projet-code-quality" -- start
         EOF
