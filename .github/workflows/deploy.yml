@@ -18,9 +18,11 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: '16'
+        # Configure Node.js version 16 pour l'environnement d'exécution
 
       - name: Install Java 17
         run: sudo apt-get install -y openjdk-17-jdk
+        # Installe Java 17, requis pour SonarQube Scanner
 
       - name: Install dependencies
         run: npm install
@@ -43,6 +45,7 @@ jobs:
 
       - name: Build project
         run: npm run build
+        # Construit le projet après l'analyse et les tests
 
   deploy:
     runs-on: ubuntu-latest  # Le job s'exécute sur une machine virtuelle Ubuntu
