@@ -3,7 +3,8 @@ module.exports = {
   testEnvironment: 'jsdom',
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
   transform: {
-    '^.+\\.tsx?$': 'ts-jest',
+    // '^.+\\.tsx?$': 'ts-jest',
+    '^.+\\.(t|j)sx?$': '@swc/jest',
     '^.+\\.tsx?$': 'babel-jest',
   },
   transformIgnorePatterns: ['<rootDir>/node_modules/(?!(node-fetch)/)'],

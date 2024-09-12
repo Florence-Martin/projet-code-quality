@@ -18,7 +18,7 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: '18.17.0'
-        # Configure Node.js version 16 pour l'environnement d'exécution
+        # Configure Node.js version 18 pour l'environnement d'exécution
 
       - name: Set up JDK 17
         uses: actions/setup-java@v3
