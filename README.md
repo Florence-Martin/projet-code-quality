@@ -152,19 +152,19 @@ npx husky add .husky/pre-push "npm run test"
 
 Si les tests échouent, le git push sera bloqué, empêchant ainsi l’envoi de code défectueux sur le dépôt.
 
-# Intégrer SonarQube
+# SonarQube
 # Intégration de SonarQube dans un Processus CI/CD
 
-## 1. Installer SonarQube
+## 1. Installer SonarQube ou SonarCloud
 
 - **Localement** : Vous pouvez installer SonarQube sur votre machine locale ou un serveur de développement.
   - Téléchargez SonarQube depuis [le site officiel](https://www.sonarqube.org/downloads/).
   - Suivez les instructions d'installation pour votre système d'exploitation.
-- **Utiliser un Service Hébergé** : Vous pouvez également utiliser un service SonarQube hébergé, comme SonarCloud.
+- **Utiliser un Service Hébergé** : Vous pouvez également utiliser un service SonarQube hébergé, comme SonarCloud (utilisé pour ce projet).
 
-## 2. Configurer SonarQube
+## 2. Configurer SonarQube 
 
-- **Créer un Projet** : Une fois SonarQube installé, créez un nouveau projet dans l'interface SonarQube.
+- **Créer un Projet** : Une fois SonarQube installé, créez un nouveau projet dans l'interface SonarQube ou lier le repo existant.
 - **Obtenir un Token** : Vous aurez besoin d'un token d'authentification pour que votre pipeline CI/CD puisse communiquer avec SonarQube.
 
 ## 3. Configurer SonarQube Scanner
@@ -184,6 +184,22 @@ Si les tests échouent, le git push sera bloqué, empêchant ainsi l’envoi de 
   # Paths
   sonar.sources=src
   sonar.tests=tests
+  ```
+<details><summary>Détails des lignes</summary>
+	- sonar.projectKey : Une chaîne de caractères qui identifie de manière unique votre projet au sein de l’organisation dans SonarQube ou SonarCloud.  
+
+	- sonar.organization : Identifie l’organisation à laquelle le projet est associé, ce qui est particulièrement utile dans SonarCloud où plusieurs projets peuvent être gérés sous une seule organisation.  
+
+	- sonar.host.url : L’URL du serveur SonarQube où l’analyse de code est envoyée. Pour un serveur local, on utilise localhost, sinon cela peut être l’URL de SonarCloud.  
+
+	- sonar.login : Le jeton d’authentification qui permet de sécuriser l’accès au serveur SonarQube. Cela remplace les anciennes méthodes d’authentification basées sur des noms d’utilisateur et des mots de passe.  
+
+	- sonar.sources : Définit le répertoire contenant le code source de votre projet qui doit être analysé par SonarQube. C’est ici que SonarQube recherchera les fichiers à analyser.  
+  
+	- sonar.tests : Indique le répertoire où se trouvent les fichiers de tests. SonarQube peut les analyser pour vérifier la couverture des tests ou d’autres aspects liés aux tests unitaires.
+  </details>  
+
+<br>
 
 - **Ajouter une Étape** pour SonarQube dans notre workflow  
 
@@ -195,7 +211,66 @@ Nous pouvons également intégrer des étapes pour la construction et les tests 
 
 OU
 
+- 👍 **Display de SonarCloud dans les logs du worflow**
+
+OU
+
 - 👍 **Recevoir les notifications par email** pour être averti des nouveaux problèmes détectés, des changements dans les mesures de qualité, etc.
+-----------
+## 4. Notes de qualité
+
+1. **Reliability (Fiabilité)** :
+
+   - **A** : Aucun bug détecté.
+   - **B** : Des bugs mineurs détectés, mais aucune faille critique.
+   - **C** : Quelques bugs détectés, mais pas trop graves.
+   - **D** : Plusieurs bugs sérieux détectés.
+   - **E** : De nombreux bugs graves détectés.
+
+2. **Security (Sécurité)** :
+
+   - **A** : Aucune vulnérabilité détectée.
+   - **B** : Vulnérabilités mineures détectées, mais aucune faille critique.
+   - **C** : Quelques vulnérabilités détectées, mais pas trop graves.
+   - **D** : Vulnérabilités sérieuses détectées.
+   - **E** : De nombreuses vulnérabilités graves détectées.
+
+3. **Maintainability (Maintenabilité)** :
+
+   - **A** : Aucune dette technique ou très peu (moins de 5% de la complexité du code).
+   - **B** : Faible dette technique.
+   - **C** : Dette technique modérée.
+   - **D** : Dette technique significative.
+   - **E** : Dette technique très élevée.
+
+4. **Coverage (Couverture de tests)** :
+
+   - **A** : Couverture de tests supérieure à 80%.
+   - **B** : Couverture de tests entre 60% et 80%.
+   - **C** : Couverture de tests entre 50% et 60%.
+   - **D** : Couverture de tests entre 30% et 50%.
+   - **E** : Couverture de tests inférieure à 30%.
+
+5. **Duplications (Duplication de code)** :
+
+   - **A** : Moins de 3% du code est dupliqué.
+   - **B** : 3% à 10% de duplication.
+   - **C** : 10% à 20% de duplication.
+   - **D** : 20% à 50% de duplication.
+   - **E** : Plus de 50% du code est dupliqué.
+
+**Globalement, les notes de A à E signifient** :
+
+   - **A** : Excellent - Pas de problèmes ou très peu, les meilleures pratiques sont respectées.
+   - **B** : Bon - Quelques améliorations possibles, mais globalement de bonne qualité.
+   - **C** : Moyen - Le code est acceptable, mais il y a plusieurs points à améliorer.
+   - **D** : Mauvais - Le code présente des problèmes sérieux qui nécessitent une attention immédiate.
+   - **E** : Très mauvais - Le code a de graves problèmes qui doivent être résolus immédiatement.  
+
+Conclusion    
+
+Ces notes sont calculées en fonction de métriques et de règles définies dans SonarCloud et sont utilisées pour déterminer la qualité du code sur plusieurs aspects importants du développement logiciel.  
+Une note globale de **A** signifie que le projet est de très haute qualité dans les domaines évalués.
 
 -----------
 - **Avantages** 👍	  
