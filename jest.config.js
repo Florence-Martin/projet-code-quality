@@ -4,6 +4,7 @@ module.exports = {
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
   transform: {
     // '^.+\\.tsx?$': 'ts-jest',
+    '^.+\\.(t|j)sx?$': ['babel-jest', { configFile: './babel.config.jest.js' }],
     '^.+\\.(t|j)sx?$': '@swc/jest',
     '^.+\\.tsx?$': 'babel-jest',
   },
