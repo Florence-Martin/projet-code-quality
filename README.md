@@ -193,6 +193,11 @@ Nous pouvons également intégrer des étapes pour la construction et les tests 
 
 - **Consulter les Rapports** : Après chaque analyse, consultez le tableau de bord SonarQube pour visualiser les résultats, les problèmes détectés et les recommandations.
 
+OU
+
+- 👍 **Recevoir les notifications par email** pour être averti des nouveaux problèmes détectés, des changements dans les mesures de qualité, etc.
+
+-----------
 - **Avantages** 👍	  
 1.	**Qualité du Code**  
 	•	Détection de Bugs : Identifie les bugs potentiels dans le code avant qu’ils ne soient déployés en production.  

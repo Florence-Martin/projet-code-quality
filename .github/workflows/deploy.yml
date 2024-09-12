@@ -48,6 +48,11 @@ jobs:
             -Dsonar.host.url=https://sonarcloud.io \
             -Dsonar.login=$SONAR_TOKEN
 
+      - name: Display SonarCloud link
+        run:  |
+         echo 'SonarCloud analysis results: https://sonarcloud.io/dashboard?id=Florence-Martin_projet-code-quality'
+        # Affiche un lien direct vers les résultats de l'analyse SonarCloud
+
       - name: Build project
         run: npm run build
         # Construit le projet après l'analyse et les tests
