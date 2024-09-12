@@ -1,15 +1,15 @@
-# Mise en Place et Partage des Hooks Git avec Husky [d'après l'article d'Arkerone sur Code heroes](https://www.codeheroes.fr/2021/10/11/git-lutilisation-des-hooks-avec-husky/)
+## Mise en Place et Partage des Hooks Git avec Husky [d'après l'article d'Arkerone sur Code heroes](https://www.codeheroes.fr/2021/10/11/git-lutilisation-des-hooks-avec-husky/)
 
 La mise en place des hooks Git et leur partage avec l'ensemble de l'équipe peut parfois être complexe. Cependant, l'utilisation de la librairie Husky simplifie grandement ce processus.
 
-## Un Hook, C'est Quoi ?
+### Un Hook, C'est Quoi ?
 
 Un hook est un script qui s'exécute automatiquement lorsqu'un événement particulier se produit dans un dépôt Git. Il existe deux types de hooks :
 
 - **Hooks côté client** : S'exécutent sur les machines des utilisateurs, sans être partagés avec les autres membres de l'équipe.
 - **Hooks côté serveur** : S'exécutent sur le serveur qui héberge le dépôt Git.
 
-### Hooks Côté Client
+#### Hooks Côté Client
 
 Les hooks côté client se divisent en trois catégories :
 
@@ -32,7 +32,7 @@ Les hooks côté client se divisent en trois catégories :
    - `post-merge` : Se déclenche après `git merge`.
    - `pre-push` : Se déclenche avant l'exécution de `git push`.
 
-### Hooks Côté Serveur
+#### Hooks Côté Serveur
 
 Les hooks côté serveur s'exécutent uniquement sur le serveur hébergeant le dépôt Git :
 
@@ -42,7 +42,7 @@ Les hooks côté serveur s'exécutent uniquement sur le serveur hébergeant le d
 
 La liste complète des hooks est disponible sur la [documentation officielle de Git](https://git-scm.com/docs/githooks).
 
-## Utiliser la librairie Husky
+### Utiliser la librairie Husky
 
 - Installation
 
