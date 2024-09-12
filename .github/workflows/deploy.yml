@@ -39,7 +39,7 @@ jobs:
           # Lance l'analyse de qualité du code avec SonarQube
           npx sonar-scanner \
             -Dsonar.projectKey=Florence-Martin_projet-code-quality \
-            -Dsonar.organization=. \
+            -Dsonar.organization=florence-martin \
             -Dsonar.host.url=https://sonarcloud.io \
             -Dsonar.login=$SONAR_TOKEN
 
